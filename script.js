@@ -73,7 +73,9 @@ const renderCalendar = () => {
     // выводим дни текущего месяца
     for (let i = 1; i <= lastDay; i++){
         if (i === new Date().getDate() && 
-            date.getMonth() === new Date().getMonth())
+            date.getMonth() === new Date().getMonth()&&
+            date.getFullYear() === new Date().getFullYear())
+
             {
                 days += `<div class='today'>${i}</div>`;
             }
