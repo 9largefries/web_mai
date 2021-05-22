@@ -21,7 +21,8 @@ html {
 
 .calendar {
     width: 45rem;
-    height: 52rem;
+    height: 69rem;
+    /* height: 52rem; */
     background-color: #222227;
     box-shadow: 0 0.5rem 3rem rgba(0,0,0,0.4);
 }
@@ -51,9 +52,13 @@ html {
     margin-bottom: 1rem;
 }
 
-.month p {
-    font-size: 1.6rem;
+.return-date p {
+    font-size: 1.6rem;   
 }
+
+.return-date p:hover {
+    text-decoration: underline;
+  }
 
 .weekdays {
     width: 100%;
@@ -81,7 +86,94 @@ html {
     padding: 0.2rem;
 }
 
-.days div:hover:not(.today) {
+.events {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.2rem;
+
+}
+
+.events div {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 400;
+    padding: 0.2rem 0.2rem 0rem 2.3rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+.count {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 400;
+    padding: 2rem 0.2rem 0.2rem 2.3rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+.input-info{
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 0.2rem 0.2rem 0.2rem 4.6rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+.count-periods output {
+    display: inline-flex;
+    font-size: 1.5rem;
+    font-weight: 400;
+    align-items: center;
+    padding: 0.2rem 0.2rem 0.2rem 2.3rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+.count-periods {
+    display: inline-flex;
+    font-size: 1.5rem;
+    font-weight: 400;
+    align-items: center;
+    padding: 0.2rem 0.2rem 0.2rem 6.9rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+input[name='periods'] {
+    width: 8rem;
+}
+
+.count-periods label {
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+}
+
+.calc-diff {
+    width: 8rem;
+    height: 2rem;
+    /* background-color: #4f217d; */
+    border: none;
+    /* color: white; */
+    text-align: center;
+    align-items: center;
+    font-size: 1.rem;
+}
+
+.calc-diff:hover {
+    opacity: 0.8;
+    filter: alpha(opacity=50);
+   }
+
+.events-list p {
+    font-size: 1.5rem;
+    width: 100%;
+    font-weight: 400;
+    padding: 0.2rem 0.2rem 0rem 2.3rem;
+    text-shadow: 0 0.3rem 0.5rem rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.days  div:hover:not(.today) {
     background-color: #262626;
     border: 0.2rem solid #777;
     cursor: pointer;

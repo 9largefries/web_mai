@@ -8,6 +8,85 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    
+    <script type="text/javascript">
+    // функции с асинхронными запросами в гугл
+    const _flatArray = array => array.reduce((a, b) => a.concat(b), []);
+    var xhr = new XMLHttpRequest();
+
+    // обрабатываем клюс для гугла
+    var api_key = prompt("Введите Google API Key:");
+    if (api_key == null || api_key == "") {
+        window.alert("Ключ не найден");
+        document.location.reload();
+    } 
+    else {
+        xhr.open( 'GET',
+        'https://www.googleapis.com/calendar/v3/calendars/ru.russian%23holiday%40group.v.calendar.google.com/events?key='+ api_key,
+        false);
+        xhr.send();
+        xhr.onload = function() {
+  if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+    alert('Введите корректный ключ'); // Например, 404: Not Found
+    document.location.reload();
+} 
+};
+    }
+// сам запрос в гугл календарь
+const getAxios = async (queryString) => {
+    try {
+        xhr.open( 'GET',
+        'https://www.googleapis.com/calendar/v3/calendars/ru.russian%23holiday%40group.v.calendar.google.com/events?key='+ api_key+queryString,
+        false);
+        xhr.send();
+        return JSON.parse(xhr.responseText);
+    } catch (error) {
+      const err = new Error();
+      throw err;
+    }
+  };
+
+// для определенного дня получаем праздники
+const getHolidayBetweenDates = async (startDateString, 
+                                    endDateString) => {
+    const timeMin = `${startDateString}T00:00:00Z`;
+    const timeMax = `${endDateString}T23:59:59Z`;
+
+    const queryString = `&timeMin=${timeMin}&timeMax=${timeMax}`;
+    const data = await getAxios(queryString);
+    return data.items;
+    };
+
+// названия праздников
+const getHolidayNames = async (dateString) =>{
+    const holidaysBetweenDates = await getHolidayBetweenDates(
+        dateString,
+        dateString
+    );
+    return holidaysBetweenDates.map(holiday => holiday.summary);
+};
+
+// функция флаг прздник/не праздник
+const isHoliday = async (dateString) => {
+    const holidays = await getHolidayNames(dateString);
+    return holidays.length > 0;
+  };
+
+// выводим результат на страницу 
+function show_events_day(year, month, day) {
+    function pad(n) {return n<10 ? '0'+n : n};
+    let the_day = year+'-' + pad(month)+'-'+ pad(day);
+    
+    getHolidayNames(the_day).then(function(res){
+        var eventsDay = document.querySelector('.events-list p');
+        
+        if (res.length < 1){
+            res = 'В этот день праздника нет'
+        }
+        eventsDay.innerHTML = res;
+        });
+  };
+    </script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300&display=swap" rel="stylesheet"> 
 </head>
 <body>
@@ -18,7 +97,9 @@
                 <i class="fas fa-angle-left prev"></i>
                 <div class="date">
                     <h1></h1>
-                    <p></p>
+                    <div class="return-date">
+                        <p></p>
+                    </div>
                 </div>
                 <i class="fas fa-angle-right next"></i>
             </div>
@@ -31,11 +112,40 @@
                 <div>Сб</div>
                 <div>Вс</div>
             </div>
-            <div class="days">
+            <div class="days">  </div>
+            <div class='events'>
+                <div>События:</div>
+                <div class='events-list'>
+                    <p></p>
+                </div>
             </div>
+
+            <div class='count'>Количество
+                <input list="plan" id='periods' name='periods' type="text">
+                <datalist id="plan">
+                    <option value="дней"></option>
+                    <option value="месяцев"></option>
+                    <option value="лет"></option>
+                </datalist>
+            </div>
+            
+            <div class="input-info">
+                <label for="start">между</label>
+                <input type="date" id="start" name="count-start"
+                value="2021-05-17" >
+
+                <label for="end">и</label>
+                <input type="date" id="end" name="count-end"
+                value="2021-05-19">
+            </div>
+
+            <div class="count-periods">
+                <button class="calc-diff">Посчитать</button>
+                <output id="result"></output>
+            </div>
+        
         </div>
     </div>
-
-    <script src="script.js"></script>
+    <script  type="module"  src="script.js"></script>
 </body>
 </html>
